@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEGRusti</title>
+
+
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+
+            /*чтобы при долгом нажатии на экран запрещалось выделение*/
+
+            touch-action: none;
+
+            -webkit-touch-callout: none;
+
+            -webkit-user-select: none;
+
+            -khtml-user-select: none;
+
+            -moz-user-select: none;
+
+            -ms-user-select: none;
+
+            user-select: none;
+
+        }
+
+
+        #draw_button {
+            background-image: url(static/pencil.png);
+            position: fixed;
+            left: 10px;
+            top: 15px;
+            font: inherit;
+            background-color: #f0f0f0;
+            border: 0;
+            color: rgb(0, 0, 0);
+            border-radius: 0.5em;
+            padding: 0.375em 1em;
+            font-weight: 600;
+            text-shadow: 0 0.0625em 0 #fff;
+            box-shadow: inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef,
+            0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede,
+            0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece;
+            transition: 0.15s ease;
+            pointer: cursor;
+
+            &:active,
+            &:hover {
+                translate: 0 0.225em;
+                box-shadow: inset 0 0.03em 0 0 #f4f4f4, 0 0.03em 0 0 #efefef,
+                0 0.0625em 0 0 #ececec, 0 0.125em 0 0 #e0e0e0, 0 0.125em 0 0 #dedede,
+                0 0.2em 0 0 #ffffff, 0 0.225em 0 0 #cacaca, 0 0.225em 0.375em 0 #cecece;
+                cursor: pointer;
+            }
+        }
+
+        #erase_button {
+            background-image: url(static/eraser.png);
+            position: fixed;
+            left: 10px;
+            top: 60px;
+            position: fixed;
+            font: inherit;
+            background-color: #f0f0f0;
+            border: 0;
+            color: #242424;
+            border-radius: 0.5em;
+            padding: 0.375em 1em;
+            font-weight: 600;
+            text-shadow: 0 0.0625em 0 #ffffff;
+            box-shadow: inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef,
+            0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede,
+            0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece;
+            transition: 0.15s ease;
+            pointer: cursor;
+
+            &:active,
+            &:hover {
+                translate: 0 0.225em;
+                box-shadow: inset 0 0.03em 0 0 #f4f4f4, 0 0.03em 0 0 #efefef,
+                0 0.0625em 0 0 #ececec, 0 0.125em 0 0 #e0e0e0, 0 0.125em 0 0 #dedede,
+                0 0.2em 0 0 #dcdcdc, 0 0.225em 0 0 #cacaca, 0 0.225em 0.375em 0 #cecece;
+                cursor: pointer;
+            }
+        }
+        #blue_button {
+            background-image: url(static/eraser.png);
+            position: fixed;
+            left: 10px;
+            top: 110px;
+            position: fixed;
+            font: inherit;
+            background-color: #f0f0f0;
+            border: 0;
+            color: #242424;
+            border-radius: 0.5em;
+            padding: 0.375em 1em;
+            font-weight: 600;
+            text-shadow: 0 0.0625em 0 #ffffff;
+            box-shadow: inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef,
+            0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede,
+            0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece;
+            transition: 0.15s ease;
+            pointer: cursor;
+
+            &:active,
+            &:hover {
+                translate: 0 0.225em;
+                box-shadow: inset 0 0.03em 0 0 #f4f4f4, 0 0.03em 0 0 #efefef,
+                0 0.0625em 0 0 #ececec, 0 0.125em 0 0 #e0e0e0, 0 0.125em 0 0 #dedede,
+                0 0.2em 0 0 #dcdcdc, 0 0.225em 0 0 #cacaca, 0 0.225em 0.375em 0 #cecece;
+                cursor: pointer;
+            }
+        }
+        #polz_button {
+            background-image: url(static/eraser.png);
+            position: fixed;
+            left: 1300px;
+            top: 30px;
+            position: fixed;
+            font: inherit;
+            background-color: #f0f0f0;
+            border: 0;
+            color: #242424;
+            border-radius: 0.5em;
+            padding: 0.375em 1em;
+            font-weight: 600;
+            text-shadow: 0 0.0625em 0 #ffffff;
+            box-shadow: inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef,
+            0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede,
+            0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece;
+            transition: 0.15s ease;
+            pointer: cursor;
+
+            &:active,
+            &:hover {
+                translate: 0 0.225em;
+                box-shadow: inset 0 0.03em 0 0 #f4f4f4, 0 0.03em 0 0 #efefef,
+                0 0.0625em 0 0 #ececec, 0 0.125em 0 0 #e0e0e0, 0 0.125em 0 0 #dedede,
+                0 0.2em 0 0 #dcdcdc, 0 0.225em 0 0 #cacaca, 0 0.225em 0.375em 0 #cecece;
+                cursor: pointer;
+            }
+        }
+
+
+        .sidebar {
+            height: 100%;
+            width: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            padding-top: 40px;
+            background-color: rgba(113, 138, 168, 0.99);
+        }
+    </style>
+
+</head>
+
+<body>
+<canvas id="canvas"></canvas>
+<div class="sidebar">
+    <div class="div">
+        <button onclick='dr()', id="draw_button">pencil</button>
+        <button onclick='erase()', id="erase_button">eraser</button>
+        <input type='color' onclick='col(value)', id="blue_button" value="#000000 "></input>
+        <input type='range' onclick='wid(value)', id="polz_button"  min = '1' value = '1'></input>
+    </div>
+</div>
+<script>
+
+    
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    let w;
+    let color_boris = '#000000';
+    w_boris = 2;
+
+
+    document.oncontextmenu = function () {
+        return false;
+    }
+
+    const drawings = [];
+
+
+    let cursor_X;
+    let cursor_Y;
+    let prev_cursor_X;
+    let prev_cursor_Y;
+    let c;
+
+
+    let offset_X = 0;
+    let offset_Y = 0;
+
+    let scale = 1;
+
+    // конвертация координат
+    function screen_X(xTrue) {
+        return (xTrue + offset_X) * scale;
+    }
+
+    function screen_Y(yTrue) {
+        return (yTrue + offset_Y) * scale;
+    }
+
+    function True_X(xScreen) {
+        return (xScreen / scale) - offset_X;
+    }
+
+    function True_Y(yScreen) {
+        return (yScreen / scale) - offset_Y;
+    }
+
+    function user_height() {
+        return canvas.clientHeight / scale;
+    }
+
+    function user_width() {
+        return canvas.clientWidth / scale;
+    }
+
+    function redraw_canvas() {
+        canvas.width = document.body.clientWidth;
+        canvas.height = document.body.clientHeight;
+
+        context.fillStyle = 'rgb(255,255,255)';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < drawings.length; i++) {
+            const line = drawings[i];
+            color_boris = line.c;
+            w = line.w;
+            draw_line(screen_X(line.x0), screen_Y(line.y0), screen_X(line.x1), screen_Y(line.y1));
+        }
+        
+    }
+
+    redraw_canvas();
+
+    // канвас становится бесконечным)))
+    window.addEventListener("resize", (event) => {
+        redraw_canvas();
+    });
+
+
+    canvas.addEventListener('mousedown', mouse_delayed);
+    canvas.addEventListener('mouseup', mouse_undelayed, false);
+    canvas.addEventListener('mouseout', mouse_undelayed, false);
+    canvas.addEventListener('mousemove', mouse_move, false);
+    canvas.addEventListener('wheel', wheeley, false);
+
+
+    canvas.addEventListener('touchstart', touch_start);
+    canvas.addEventListener('touchend', touch_end);
+    canvas.addEventListener('touchcancel', touch_end);
+    canvas.addEventListener('touchmove', touch_move);
+
+    let leftMouseDown = false;
+    let rightMouseDown = false;
+
+    function mouse_delayed(event) {
+
+
+        if (event.button === 0) {
+            leftMouseDown = true;
+            rightMouseDown = false;
+        }
+
+        if (event.button === 2) {
+            rightMouseDown = true;
+            leftMouseDown = false;
+        }
+
+
+        cursor_X = event.pageX;
+        cursor_Y = event.pageY;
+        prev_cursor_X = event.pageX;
+        prev_cursor_Y = event.pageY;
+    }
+
+    function mouse_move(event) {
+        cursor_X = event.pageX;
+        cursor_Y = event.pageY;
+        const scaled_X = True_X(cursor_X);
+        const scaled_Y = True_Y(cursor_Y);
+        const prev_scaled_X = True_X(prev_cursor_X);
+        const prev_scaled_Y = True_Y(prev_cursor_Y);
+
+        if (leftMouseDown) {
+            drawings.push({
+                x0: prev_scaled_X,
+                y0: prev_scaled_Y,
+                x1: scaled_X,
+                y1: scaled_Y,
+                c: color_boris,
+                w: w
+            })
+
+            draw_line(prev_cursor_X, prev_cursor_Y, cursor_X, cursor_Y);
+        }
+        if (rightMouseDown) {
+
+            offset_X += (cursor_X - prev_cursor_X) / scale;
+            offset_Y += (cursor_Y - prev_cursor_Y) / scale;
+            redraw_canvas();
+        }
+        prev_cursor_X = cursor_X;
+        prev_cursor_Y = cursor_Y;
+    }
+
+    function mouse_undelayed() {
+        leftMouseDown = false;
+        rightMouseDown = false;
+    }
+
+    function wheeley(event) {
+        const deltaY = event.deltaY;
+        const scaleAmount = -deltaY / 500;
+        scale = scale * (1 + scaleAmount);
+
+
+        var distX = event.pageX / canvas.clientWidth;
+        var distY = event.pageY / canvas.clientHeight;
+
+
+        const unitsZoomedX = user_width() * scaleAmount;
+        const unitsZoomedY = user_height() * scaleAmount;
+
+        const unitsAddLeft = unitsZoomedX * distX;
+        const unitsAddTop = unitsZoomedY * distY;
+
+        offset_X -= unitsAddLeft;
+        offset_Y -= unitsAddTop;
+
+        redraw_canvas();
+        w = w_boris/scale;
+        
+    }
+    function dr(){
+        color_boris = "#000"
+        w_boris = 2;
+        w = w_boris/scale;
+    }
+    function col(val){
+        color_boris = val
+        w_boris = 2;
+        w = w_boris/scale;
+    }
+    function wid(a){
+        w_boris = a; 
+        console.log(a);  
+        w = w_boris/scale;
+    }
+    // const erase = () => context.globalCompositeOperation = 'destination-out'
+    function draw_line(x0, y0, x1, y1) {
+        context.beginPath();
+        context.moveTo(x0, y0);
+        context.lineTo(x1, y1);
+        context.strokeStyle = color_boris;
+        context.lineWidth = w*scale;
+        context.stroke();
+        context.lineCap = "round";
+    }
+        
+    function erase(){
+        color_boris = "#ffffff";
+        w_boris = 50;
+        w = w_boris/scale;
+    }
+
+    const prevTouches = [null, null]; // до двух касаний
+    let singleTouch = false;
+    let doubleTouch = false;
+
+    function touch_start(event) {
+        if (event.touches.length === 1) {
+            singleTouch = true;
+            doubleTouch = false;
+        }
+        if (event.touches.length >= 2) {
+            singleTouch = false;
+            doubleTouch = true;
+        }
+
+
+        prevTouches[0] = event.touches[0];
+        prevTouches[1] = event.touches[1];
+
+    }
+
+    function touch_move(event) {
+
+        const touch_0X = event.touches[0].pageX;
+        const touch_0Y = event.touches[0].pageY;
+        const prev_touch_0X = prevTouches[0].pageX;
+        const prev_touch_0Y = prevTouches[0].pageY;
+
+        const scaled_X = True_X(touch_0X);
+        const scaled_Y = True_Y(touch_0Y);
+        const prev_scaled_X = True_X(prev_touch_0X);
+        const prev_scaled_Y = True_Y(prev_touch_0Y);
+
+        if (singleTouch) {
+
+            drawings.push({
+                x0: prev_scaled_X,
+                y0: prev_scaled_Y,
+                x1: scaled_X,
+                y1: scaled_Y,
+                c: color_boris,
+            })
+            //draw_line()(prev_touch_0X, prev_touch_0Y, touch_0X, touch_0Y);
+        }
+
+        if (doubleTouch) {
+
+            const touch_1X = event.touches[1].pageX;
+            const touch_1Y = event.touches[1].pageY;
+            const prev_touch_1X = prevTouches[1].pageX;
+            const prev_touch_1Y = prevTouches[1].pageY;
+
+            const midX = (touch_0X + touch_1X) / 2;
+            const midY = (touch_0Y + touch_1Y) / 2;
+            const prevMidX = (prev_touch_0X + prev_touch_1X) / 2;
+            const prevMidY = (prev_touch_0Y + prev_touch_1Y) / 2;
+
+            //расстояние между касаниями
+            const hypot = Math.sqrt(Math.pow((touch_0X - touch_1X), 2) + Math.pow((touch_0Y - touch_1Y), 2));
+            const prevHypot = Math.sqrt(Math.pow((prev_touch_0X - prev_touch_1X), 2) + Math.pow((prev_touch_0Y - prev_touch_1Y), 2));
+
+            // изменение экрана
+            var zoomAmount = hypot / prevHypot;
+            scale = scale * zoomAmount;
+            const scaleAmount = 1 - zoomAmount;
+
+
+            const panX = midX - prevMidX;
+            const panY = midY - prevMidY;
+
+            offset_X += (panX / scale);
+            offset_Y += (panY / scale);
+
+
+            var zoom_ratio_X = midX / canvas.clientWidth;
+            var zoom_ratio_Y = midY / canvas.clientHeight;
+
+
+            const units_zoomed_X = user_width() * scaleAmount;
+            const units_zoomed_Y = user_height() * scaleAmount;
+
+            const units_add_left = units_zoomed_X * zoom_ratio_X;
+            const units_add_top = units_zoomed_Y * zoom_ratio_Y;
+
+            offset_X += units_add_left;
+            offset_Y += units_add_top;
+
+            redraw_canvas();
+        }
+        prevTouches[0] = event.touches[0];
+        prevTouches[1] = event.touches[1];
+    }
+
+    function touch_end(event) {
+        singleTouch = false;
+        doubleTouch = false;
+    }
+
+
+</script>
+</body>
+
+</html>
