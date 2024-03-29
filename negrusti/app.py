@@ -15,8 +15,8 @@ sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins="*")
 @app.get('/')
 def hello_world():
     #return get_file_response("static/html/index.html")
-    #return get_file_response("static/html/auth_page.html")
-    return get_file_response("static/html/home_page.html")
+    return get_file_response("static/html/auth_page.html")
+    #return get_file_response("static/html/home_page.html")
 
 @app.get("/draw/")
 async def get_draw_page() -> FileResponse:
