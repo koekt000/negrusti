@@ -346,7 +346,6 @@
             if (line.is_text){
                 context.font = font+"px Arial";
                 context.fillStyle = "black";
-                console.log(context.font)
                 context.fillText(line.source, screen_X(line.x0), screen_Y(line.y0));
             }
             if (line.is_picture){
@@ -490,7 +489,6 @@
     }
     function picture_2(){
         img.src = document.getElementById("link_picture").value;
-        console.log("211");
         w_maxim = img.width;
         h_maxim = img.height;
         w_img = w_maxim/scale;
