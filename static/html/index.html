@@ -493,15 +493,10 @@
         h_maxim = img.height;
         w_img = w_maxim/scale;
         h_img = h_maxim/scale;
-        var IsAlreadyCalled=false;
-        if (IsAlreadyCalled==false){
-            img.onload = function(){
-                console.log(IsAlreadyCalled)
-                IsAlreadyCalled = true;
-                return 0;
-            }
-            context.drawImage(img, 0, 0, w_img, h_img);
+        img.onload = function(){
+            return 0;
         }
+        context.drawImage(img, 0, 0, w_img, h_img);
         drawings.push({
             x0: 0,
             y0: 0,
