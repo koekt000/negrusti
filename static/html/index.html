@@ -299,6 +299,7 @@
     let prev_cursor_X;
     let prev_cursor_Y;
     let c;
+    let font;
     let w_img;
     let h_img;
     var img = new Image();
@@ -343,8 +344,9 @@
         for (let i = 0; i < drawings.length; i++) {
             const line = drawings[i];
             if (line.is_text){
-                context.font = "20px Arial";
+                context.font = font+"px Arial";
                 context.fillStyle = "black";
+                console.log(context.font)
                 context.fillText(line.source, screen_X(line.x0), screen_Y(line.y0));
             }
             if (line.is_picture){
@@ -463,6 +465,7 @@
         w = w_boris/scale;
         w_img = w_maxim*scale;
         h_img = h_maxim*scale;
+        font = 20*scale;
         
     }
     function dr(){
@@ -513,10 +516,12 @@
     function  texte_2(){
         context.font = "20px Arial";
         context.fillStyle = "black";
+        font = 20/scale;
         context.fillText(document.getElementById("link_text").value, cursor_X, cursor_Y);
         drawings.push({
             x0: cursor_X,
             y0: cursor_Y,
+            font: font,
             source: document.getElementById("link_text").value,
             is_picture: false,
             is_text: true
