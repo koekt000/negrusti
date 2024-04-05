@@ -121,6 +121,64 @@
                 cursor: pointer;
             }
         }
+        #img_button {
+            background-image: url(static/eraser.png);
+            position: fixed;
+            left: 10px;
+            top: 165px;
+            position: fixed;
+            font: inherit;
+            background-color: #f0f0f0;
+            border: 0;
+            color: #242424;
+            border-radius: 0.5em;
+            padding: 0.375em 1em;
+            font-weight: 600;
+            text-shadow: 0 0.0625em 0 #ffffff;
+            box-shadow: inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef,
+            0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede,
+            0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece;
+            transition: 0.15s ease;
+            cursor: pointer;
+
+            &:active,
+            &:hover {
+                translate: 0 0.225em;
+                box-shadow: inset 0 0.03em 0 0 #f4f4f4, 0 0.03em 0 0 #efefef,
+                0 0.0625em 0 0 #ececec, 0 0.125em 0 0 #e0e0e0, 0 0.125em 0 0 #dedede,
+                0 0.2em 0 0 #dcdcdc, 0 0.225em 0 0 #cacaca, 0 0.225em 0.375em 0 #cecece;
+                cursor: pointer;
+            }
+        }
+        #text_button {
+            background-image: url(static/eraser.png);
+            position: fixed;
+            left: 10px;
+            top: 225px;
+            position: fixed;
+            font: inherit;
+            background-color: #f0f0f0;
+            border: 0;
+            color: #242424;
+            border-radius: 0.5em;
+            padding: 0.375em 1em;
+            font-weight: 600;
+            text-shadow: 0 0.0625em 0 #ffffff;
+            box-shadow: inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef,
+            0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede,
+            0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece;
+            transition: 0.15s ease;
+            cursor: pointer;
+
+            &:active,
+            &:hover {
+                translate: 0 0.225em;
+                box-shadow: inset 0 0.03em 0 0 #f4f4f4, 0 0.03em 0 0 #efefef,
+                0 0.0625em 0 0 #ececec, 0 0.125em 0 0 #e0e0e0, 0 0.125em 0 0 #dedede,
+                0 0.2em 0 0 #dcdcdc, 0 0.225em 0 0 #cacaca, 0 0.225em 0.375em 0 #cecece;
+                cursor: pointer;
+            }
+        }
         #polz_button {
             background-image: url(static/eraser.png);
             position: fixed;
@@ -205,8 +263,11 @@
             <input type='range' onclick='wid(value)', id="polz_button"  min = '1' value = '1'></input>
             <button onclick="window.location='https://one-qr.ru/v?2bKu3vJljv01iKWS'" scr='https://one-qr.ru/v?2bKu3vJljv01iKWS ', id="donate">задонить</button>
         </div>
-        <div id="picture_button">
-            <button onclick="picture()", id="first_picture_button">Добавить картинку</button>
+        <div id="img_button">
+            <button onclick="picture()", id="first_picture_button">Картинка</button>
+        </div>
+        <div id="text_button">
+            <button onclick="texte()", id="first_text_button", test_id="text_button">Текст</button>
         </div>
     </div>
 
@@ -216,7 +277,8 @@
     
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
-    const picture_div = document.getElementById("picture_button")
+    const picture_div = document.getElementById("img_button")
+    const text_div = document.getElementById("text_button")
 
     let w;
     let color_boris = '#000000';
@@ -280,16 +342,19 @@
         context.fillRect(0, 0, canvas.width, canvas.height);
         for (let i = 0; i < drawings.length; i++) {
             const line = drawings[i];
-            if (line.is_picture == false){
+            if (line.is_text){
+                context.font = "20px Arial";
+                context.fillStyle = "black";
+                context.fillText(line.source, screen_X(line.x0), screen_Y(line.y0));
+            }
+            if (line.is_picture){
+                img.src = line.source;
+                context.drawImage(img, screen_X(line.x0), screen_Y(line.y0), w_img, h_img);
+            }
+            else {
             color_boris = line.c;
             w = line.w;
             draw_line(screen_X(line.x0), screen_Y(line.y0), screen_X(line.x1), screen_Y(line.y1));}
-            if (line.is_picture){
-                w_img = line.w_img;
-                h_img = line.h_img;
-                img.src = line.source
-            context.drawImage(img, screen_X(line.x0), screen_Y(line.y0), 100, 100);
-            }
         }
         
     }
@@ -337,6 +402,7 @@
         prev_cursor_Y = event.pageY;
     }
 
+    
     function mouse_move(event) {
         cursor_X = event.pageX;
         cursor_Y = event.pageY;
@@ -353,7 +419,8 @@
                 y1: scaled_Y,
                 c: color_boris,
                 w: w,
-                is_picture: false
+                is_picture: false,
+                is_text: false
             })
 
             draw_line(prev_cursor_X, prev_cursor_Y, cursor_X, cursor_Y);
@@ -394,8 +461,8 @@
 
         redraw_canvas();
         w = w_boris/scale;
-        w_img = w_maxim/scale;
-        h_img = h_maxim/scale;
+        w_img = w_maxim*scale;
+        h_img = h_maxim*scale;
         
     }
     function dr(){
@@ -420,23 +487,42 @@
     }
     function picture_2(){
         img.src = document.getElementById("link_picture").value;
-        context.drawImage(img, 0, 0);
-        console.log("211")
+        console.log("211");
         w_maxim = img.width;
         h_maxim = img.height;
         w_img = w_maxim/scale;
         h_img = h_maxim/scale;
+        context.drawImage(img, 0, 0, w_img, h_img);
         drawings.push({
             x0: 0,
             y0: 0,
-            w_img: img.width,
-            h_img: img.height,
+            w_img: w_img,
+            h_img: h_img,
             source: document.getElementById("link_picture").value,
-            is_picture: true
+            is_picture: true,
+            is_text: false
         })
+        paste_picture_html.remove();
     }
 
-    // let paste_text_html =
+    let paste_text_html = document.createElement("div");
+    paste_text_html.innerHTML = '<input type="text", id="link_text"></input><button id="add_text_remove_new_staff", onclick="texte_2()">Подтвердить</button>';
+    function texte(){
+        text_div.append(paste_text_html);
+    }
+    function  texte_2(){
+        context.font = "20px Arial";
+        context.fillStyle = "black";
+        context.fillText(document.getElementById("link_text").value, cursor_X, cursor_Y);
+        drawings.push({
+            x0: cursor_X,
+            y0: cursor_Y,
+            source: document.getElementById("link_text").value,
+            is_picture: false,
+            is_text: true
+        })
+        paste_text_html.remove();
+    }
 
     // const erase = () => context.globalCompositeOperation = 'destination-out'
     function draw_line(x0, y0, x1, y1) {
@@ -495,7 +581,8 @@
                 x1: scaled_X,
                 y1: scaled_Y,
                 c: color_boris,
-                is_picture: false
+                is_picture: false,
+                is_text: false
             })
             //draw_line()(prev_touch_0X, prev_touch_0Y, touch_0X, touch_0Y);
         }
