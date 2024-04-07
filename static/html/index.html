@@ -493,9 +493,6 @@
         h_maxim = img.height;
         w_img = w_maxim/scale;
         h_img = h_maxim/scale;
-        img.onload = function(){
-            return 0;
-        }
         context.drawImage(img, 0, 0, w_img, h_img);
         drawings.push({
             x0: 0,
