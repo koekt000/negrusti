@@ -363,6 +363,7 @@
     let w_img;
     let h_img;
     var img = new Image();
+    let create_img_onclick = false;
 
 
     let offset_X = 0;
@@ -449,6 +450,25 @@
         if (event.button === 0) {
             leftMouseDown = true;
             rightMouseDown = false;
+            if (create_img_onclick){
+                img.src = document.getElementById("link_picture").value;
+        w_maxim = img.width;
+        h_maxim = img.height;
+        w_img = w_maxim/scale;
+        h_img = h_maxim/scale;
+        context.drawImage(img, cursor_X, cursor_Y, w_img, h_img);
+        drawings.push({
+            x0: cursor_X,
+            y0: cursor_Y,
+            w_img: w_img,
+            h_img: h_img,
+            source: document.getElementById("link_picture").value,
+            is_picture: true,
+            is_text: false
+        })
+        paste_picture_html.remove();
+            }
+        create_img_onclick = false;
         }
 
         if (event.button === 2) {
@@ -548,22 +568,7 @@
         picture_div.append(paste_picture_html);
     }
     function picture_2(){
-        img.src = document.getElementById("link_picture").value;
-        w_maxim = img.width;
-        h_maxim = img.height;
-        w_img = w_maxim/scale;
-        h_img = h_maxim/scale;
-        context.drawImage(img, 0, 0, w_img, h_img);
-        drawings.push({
-            x0: 0,
-            y0: 0,
-            w_img: w_img,
-            h_img: h_img,
-            source: document.getElementById("link_picture").value,
-            is_picture: true,
-            is_text: false
-        })
-        paste_picture_html.remove();
+        create_img_onclick = true;
     }
 
     let paste_text_html = document.createElement("div");
