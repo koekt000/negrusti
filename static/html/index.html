@@ -208,35 +208,7 @@
                 cursor: pointer;
             }
         }
-        #tri_button {
-            background-image: url(static/eraser.png);
-            position: fixed;
-            left: 10px;
-            top: 345px;
-            position: fixed;
-            font: inherit;
-            background-color: #f0f0f0;
-            border: 0;
-            color: #242424;
-            border-radius: 0.5em;
-            padding: 0.375em 1em;
-            font-weight: 600;
-            text-shadow: 0 0.0625em 0 #ffffff;
-            box-shadow: inset 0 0.0625em 0 0 #f4f4f4, 0 0.0625em 0 0 #efefef,
-            0 0.125em 0 0 #ececec, 0 0.25em 0 0 #e0e0e0, 0 0.3125em 0 0 #dedede,
-            0 0.375em 0 0 #dcdcdc, 0 0.425em 0 0 #cacaca, 0 0.425em 0.5em 0 #cecece;
-            transition: 0.15s ease;
-            cursor: pointer;
-
-            &:active,
-            &:hover {
-                translate: 0 0.225em;
-                box-shadow: inset 0 0.03em 0 0 #f4f4f4, 0 0.03em 0 0 #efefef,
-                0 0.0625em 0 0 #ececec, 0 0.125em 0 0 #e0e0e0, 0 0.125em 0 0 #dedede,
-                0 0.2em 0 0 #dcdcdc, 0 0.225em 0 0 #cacaca, 0 0.225em 0.375em 0 #cecece;
-                cursor: pointer;
-            }
-        }
+        
         #polz_button {
             background-image: url(static/eraser.png);
             position: fixed;
@@ -328,7 +300,6 @@
             <button onclick="texte()", id="first_text_button", test_id="text_button">Текст</button>
         </div>
         <button onclick='draw_rect()', id="rect_button">Прямоугольник</button>
-        <button onclick='draw_tri()', id="tri_button">Треугольник</button>
     </div>
 
 </div>
@@ -364,6 +335,7 @@
     let h_img;
     var img = new Image();
     let create_img_onclick = false;
+    var rect = false;
 
 
     let offset_X = 0;
@@ -450,23 +422,23 @@
         if (event.button === 0) {
             leftMouseDown = true;
             rightMouseDown = false;
-            if (create_img_onclick){
+            if (create_img_onclick) {
                 img.src = document.getElementById("link_picture").value;
-        w_maxim = img.width;
-        h_maxim = img.height;
-        w_img = w_maxim/scale;
-        h_img = h_maxim/scale;
-        context.drawImage(img, cursor_X, cursor_Y, w_img, h_img);
-        drawings.push({
-            x0: cursor_X,
-            y0: cursor_Y,
-            w_img: w_img,
-            h_img: h_img,
-            source: document.getElementById("link_picture").value,
-            is_picture: true,
-            is_text: false
-        })
-        paste_picture_html.remove();
+                w_maxim = img.width;
+                h_maxim = img.height;
+                w_img = w_maxim / scale;
+                h_img = h_maxim / scale;
+                context.drawImage(img, cursor_X, cursor_Y, w_img, h_img);
+                drawings.push({
+                    x0: cursor_X,
+                    y0: cursor_Y,
+                    w_img: w_img,
+                    h_img: h_img,
+                    source: document.getElementById("link_picture").value,
+                    is_picture: true,
+                    is_text: false
+                })
+                paste_picture_html.remove();
             }
         create_img_onclick = false;
         }
@@ -493,6 +465,38 @@
         const prev_scaled_Y = True_Y(prev_cursor_Y);
 
         if (leftMouseDown) {
+            if (rect){
+                drawings.push({
+                x0: prev_scaled_X,
+                y0: prev_scaled_Y,
+                x1: prev_scaled_X + 400,
+                y1: prev_scaled_Y,
+                c: color_boris,
+            },
+            {
+                x0: prev_scaled_X,
+                y0: prev_scaled_Y,
+                x1: prev_scaled_X,
+                y1: prev_scaled_Y + 100,
+                c: color_boris,
+            },
+            {
+                x0: prev_scaled_X + 400,
+                y0: prev_scaled_Y,
+                x1: prev_scaled_X + 400,
+                y1: prev_scaled_Y + 100,
+                c: color_boris,
+            },
+            {
+                x0: prev_scaled_X,
+                y0: prev_scaled_Y + 100,
+                x1: prev_scaled_X + 400,
+                y1: prev_scaled_Y + 100,
+                c: color_boris,
+            })
+            redraw_canvas()
+            rect = !rect
+            }
             drawings.push({
                 x0: prev_scaled_X,
                 y0: prev_scaled_Y,
@@ -502,7 +506,7 @@
                 w: w,
                 is_picture: false,
                 is_text: false
-            })
+                })
 
             draw_line(prev_cursor_X, prev_cursor_Y, cursor_X, cursor_Y);
         }
@@ -602,60 +606,9 @@
         context.stroke();
         context.lineCap = "round";
     }
-    function draw_tri() {
-            drawings.push({
-                x0: 500,
-                y0: 200,
-                x1: 600,
-                y1: 400,
-                c: color_boris,
-            },
-            {
-                x0: 500,
-                y0: 200,
-                x1: 400,
-                y1: 400,
-                c: color_boris,
-            },
-            {
-                x0: 400,
-                y0: 400,
-                x1: 600,
-                y1: 400,
-                c: color_boris,
-            })
-        redraw_canvas()
-    }
+
     function draw_rect() {
-            drawings.push({
-                x0: 300,
-                y0: 300,
-                x1: 600,
-                y1: 300,
-                c: color_boris,
-            },
-            {
-                x0: 300,
-                y0: 300,
-                x1: 300,
-                y1: 400,
-                c: color_boris,
-            },
-            {
-                x0: 600,
-                y0: 300,
-                x1: 600,
-                y1: 400,
-                c: color_boris,
-            },
-            {
-                x0: 300,
-                y0: 400,
-                x1: 600,
-                y1: 400,
-                c: color_boris,
-            })
-        redraw_canvas()
+        rect = !rect
     }
 
     function erase(){
